@@ -1,0 +1,2 @@
+#download opentelemetry javaagent 1.25.1 from github releases.
+curl https://repo1.maven.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/1.25.1/opentelemetry-javaagent-1.25.1.jar --output opentelemetry-javaagent-1.25.1.jar

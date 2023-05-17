@@ -1,0 +1,68 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: promexample
+    const_labels:
+      label1: value1
+  logging:
+
+  zipkin:
+    endpoint: "http://zipkin-all-in-one:9411/api/v2/spans"
+    format: proto
+
+  jaeger:
+    endpoint: jaeger:14250
+    tls:
+      insecure: true
+
+  splunk_hec:
+    # Splunk HTTP Event Collector token.
+    token: "abcd1234"
+    # URL to a Splunk instance to send data to.
+    endpoint: "https://splunk:8088/services/collector"
+    # Optional Splunk source: https://docs.splunk.com/Splexicon:Source
+    source: "otel"
+    # Optional Splunk source type: https://docs.splunk.com/Splexicon:Sourcetype
+    sourcetype: "otel"
+    # Splunk index, optional name of the Splunk index targeted.
+    #    index: "metrics"
+    # Maximum HTTP connections to use simultaneously when sending data. Defaults to 100.
+    max_connections: 200
+    # Whether to disable gzip compression over HTTP. Defaults to false.
+    disable_compression: false
+    # HTTP timeout when sending data. Defaults to 10s.
+    timeout: 10s
+    tls:
+      # Whether to skip checking the certificate of the HEC endpoint when sending data over HTTPS. Defaults to false.
+      insecure_skip_verify: true
+    # Application name is used to track telemetry information for Splunk App's using HEC by App name.
+    splunk_app_name: "OpenTelemetry-Collector Splunk Exporter"
+    # Application version is used to track telemetry information for Splunk App's using HEC by App version.
+    splunk_app_version: "v0.0.1"
+
+processors:
+  batch:
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
+
+service:
+  extensions: [pprof, zpages, health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, jaeger]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]
