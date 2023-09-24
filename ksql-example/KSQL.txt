@@ -1,0 +1,35 @@
+
+CREATE Stream topic_A_stream (
+    key VARCHAR  KEY,
+    value VARCHAR
+) WITH (
+    KEY_FORMAT='KAFKA',
+    VALUE_FORMAT='KAFKA',
+    WRAP_SINGLE_VALUE=false,
+    kafka_topic = 'TopicA'
+);
+
+
+CREATE Stream topic_B_stream (
+    key VARCHAR  KEY,
+    value VARCHAR
+) WITH (
+    KEY_FORMAT='KAFKA',
+    VALUE_FORMAT='KAFKA',
+    WRAP_SINGLE_VALUE=false,
+    kafka_topic = 'TopicB'
+);
+
+
+CREATE STREAM topic_A_enriched WITH (kafka_topic = 'topic_A_enriched') AS
+SELECT TOPIC_A_STREAM.KEY KEY, (TOPIC_A_STREAM.VALUE + 'ABC') value
+FROM topic_A_stream;
+
+
+CREATE STREAM topic_a_avro_stream WITH(VALUE_FORMAT='Avro') AS SELECT * FROM topic_a_stream;
+CREATE STREAM topic_b_avro_stream WITH(VALUE_FORMAT='Avro') AS SELECT * FROM topic_b_stream;
+
+CREATE STREAM joined WITH (kafka_topic = 'topic_ab') AS
+SELECT a.*, b.*
+FROM topic_a_avro_stream a LEFT JOIN topic_b_avro_stream b WITHIN 5 MINUTES
+on a.key = b.key;
