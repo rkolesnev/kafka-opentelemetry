@@ -1,6 +1,8 @@
 # Instrumenting Kafka clients with OpenTelemetry
 
 Example kafka applications with OpenTelemetry instrumentation
+otel-extesion-example - Example java agent extension for KStreams and kSQL state store operation tracing
+
 kafka-consumer-auto - Kafka Consumer application with OpenTelemetry configured using AutoConfiguration
 
 kafka-producer-auto - Kafka Producer application with OpenTelemetry configured using AutoConfiguration
