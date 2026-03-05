@@ -1,3 +1,9 @@
+# Example code
+
+This is an example repository that acoompanied my talk [**"A Practical Guide To End-to-End Tracing In Event Driven Architectures"**](https://www.confluent.io/events/kafka-summit-london-2023/a-practical-guide-to-end-to-end-tracing-in-event-driven-architectures/) at Kafka Summit London 2023 and Confluent Current 2023
+
+It is based on original https://github.com/ppatierno/kafka-opentelemetry repository / blog post
+
 # Instrumenting Kafka clients with OpenTelemetry
 
 Example kafka applications with OpenTelemetry instrumentation
